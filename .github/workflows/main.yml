@@ -2,17 +2,15 @@ name: Sync upstream
 
 on:
   schedule:
-    # 每天凌晨 0 点（UTC 时间）运行
-    # 你可以根据需要调整 cron 表达式
     - cron: '0 0 * * *'
-  # 也可以添加 workflow_dispatch 允许手动触发
   workflow_dispatch:
 
-# === 新增权限配置块 ===
+# permissions 块应该与 name 和 on 在同一级别（没有缩进）
 permissions:
-  contents: write # 确保对仓库内容有写权限
-  workflows: write # 赋予修改 workflow 文件的权限
-# ====================
+  # contents 和 workflows 应该相对于 permissions: 向右缩进
+  # 通常是 2 个空格
+  contents: write
+  workflows: write # 检查这一行的缩进，它应该是相对于 permissions: 向右缩进的
 
 jobs:
   sync:
@@ -31,7 +29,6 @@ jobs:
 
     - name: Add upstream remote
       run: |
-        # 请确认这里的 upstream 仓库地址是正确的
         git remote add upstream https://github.com/ultralytics/ultralytics.git
 
     - name: Fetch upstream
@@ -40,13 +37,10 @@ jobs:
 
     - name: Merge upstream/main
       run: |
-        # 假设你想同步 upstream 的 main 分支到你 fork 的 main 分支
-        # 如果 upstream 的主分支是 master，或者你想同步其他分支，请修改这里的 'main'
         git merge upstream/main -m "Merge upstream changes"
 
     - name: Push changes
       run: |
         git push origin main
       env:
-        # GITHUB_TOKEN 的权限现在由上面的 permissions 块控制
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
