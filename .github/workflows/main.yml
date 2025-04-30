@@ -1,15 +1,22 @@
-name: Sync upstream
+
+The updated workflow file Modify the Workflow File
+In the `.github/workflows/main should look like this:
+
+```yaml
+name: Sync upstream.yml` file, ensure you are using the correct token with the
 
 on:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 0 necessary permissions. Replace `GITHUB_TOKEN` * * *'
   workflow_dispatch:
 
-# <-- 确保这里有合适的空行，并且没有错误缩进的注释或内容 -->
+permissions:
+  with your PAT if needed:
 
-permissions: write-all # <--- 这一行必须顶格写，前面不能有任何空格
-
-# <-- 确保这里有合适的空行，并且没有错误缩进的注释或内容 -->
+```yaml
+- name: Push changes
+contents: write
+  workflows: write
 
 jobs:
   sync:
@@ -19,27 +26,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
       with:
-        fetch-depth: 0
+        fetch-depth:  run: git push https://<your-token>@github.com/y 0
 
     - name: Configure Git identity
       run: |
-        git config user.name "github-actions[bot]"
-        git config user.email "github-actions[bot]@users.noreply.github.com"
-
-    - name: Add upstream remote
-      run: |
-        git remote add upstream https://github.com/ultralytics/ultralytics.git
-
-    - name: Fetch upstream
-      run: |
-        git fetch upstream
-
-    - name: Merge upstream/main
-      run: |
-        git merge upstream/main -m "Merge upstream changes"
-
-    - name: Push changes
-      run: |
-        git push origin main
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        git config user.name "github-actions[xliang/ultralytics.git main
+env:
+ GITHUB_TOKEN:bot]"
+        git config user.email "github-actions[ ${{ secrets.GITHUB_TOKEN }}
