@@ -5,12 +5,11 @@ on:
     - cron: '0 0 * * *'
   workflow_dispatch:
 
-# permissions 块应该与 name 和 on 在同一级别（没有缩进）
-permissions:
-  # contents 和 workflows 应该相对于 permissions: 向右缩进
-  # 通常是 2 个空格
-  contents: write
-  workflows: write # 检查这一行的缩进，它应该是相对于 permissions: 向右缩进的
+# <-- 确保这里有合适的空行，并且没有错误缩进的注释或内容 -->
+
+permissions: write-all # <--- 这一行必须顶格写，前面不能有任何空格
+
+# <-- 确保这里有合适的空行，并且没有错误缩进的注释或内容 -->
 
 jobs:
   sync:
