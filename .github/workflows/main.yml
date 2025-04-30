@@ -8,6 +8,12 @@ on:
   # 也可以添加 workflow_dispatch 允许手动触发
   workflow_dispatch:
 
+# === 新增权限配置块 ===
+permissions:
+  contents: write # 确保对仓库内容有写权限
+  workflows: write # 赋予修改 workflow 文件的权限
+# ====================
+
 jobs:
   sync:
     runs-on: ubuntu-latest
@@ -16,15 +22,12 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
       with:
-        # 获取完整的历史记录，以便合并
         fetch-depth: 0
 
-    # === 新增步骤：配置 Git 身份 ===
     - name: Configure Git identity
       run: |
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
-    # ===============================
 
     - name: Add upstream remote
       run: |
@@ -39,11 +42,11 @@ jobs:
       run: |
         # 假设你想同步 upstream 的 main 分支到你 fork 的 main 分支
         # 如果 upstream 的主分支是 master，或者你想同步其他分支，请修改这里的 'main'
-        # 添加 --no-edit 避免在合并时尝试打开编辑器（尽管 Actions 环境下不会）
         git merge upstream/main -m "Merge upstream changes"
 
     - name: Push changes
       run: |
         git push origin main
       env:
+        # GITHUB_TOKEN 的权限现在由上面的 permissions 块控制
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
